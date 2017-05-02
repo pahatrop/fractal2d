@@ -80,6 +80,7 @@
                 <StackPanel Orientation="Horizontal" Background="#FFC19B6D">
                     <Button Click="CarpetButton_Click" Content="Draw carpet"/>
                     <Button Click="TriangleButton_Click" Content="Draw triangle"/>
+                    <Button Click="PascalTriangleButton_Click" Content="Draw Pascal triangle"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Cantor function">

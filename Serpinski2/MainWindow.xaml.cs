@@ -109,6 +109,27 @@ namespace Serpinski2
             });
         }
 
+        private void PascalTriangleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_work) return;
+            _work = true;
+            drawingArea.Width = _width;
+            drawingArea.Height = _height;
+            Task.Run(() => {
+                _currentDelegat = PascalTriangleButton_Click;
+                //создаем Bitmap для треугольника
+                _fractal = new Bitmap(_width, _height);
+                // cоздаем новый объект Graphics из указанного Bitmap
+                _graph = Graphics.FromImage(_fractal);
+                //вершины треугольника
+                //вызываем функцию отрисовки
+                DrawPascalTriangle();
+                //отображаем получившийся фрактал
+                Dispatcher.Invoke(() => drawingArea.Source = BitmapToImageSource(_fractal));
+                _work = false;
+            });
+        }
+
         private void CarpetButton_Click(object sender, RoutedEventArgs e)
         {
             if (_work) return;
@@ -168,6 +189,27 @@ namespace Serpinski2
                 DrawTriangle(level - 1, leftMid, left, topMid);
                 DrawTriangle(level - 1, rightMid, topMid, right);
             }
+        }
+
+        private void DrawPascalTriangle()
+        {
+            int n = 512, m = 3;
+            int[,] T = new int[n,n];
+            for (int i = 0; i < n; ++i)
+            {
+                T[i, 0] = 1;
+                for (int j = 1; j <= i; ++j)
+                {
+                    T[i, j] = (T[i - 1, j - 1] + T[i - 1, j]) % m;
+                    if(T[i,j] == 1)
+                         _graph.FillRectangle(Brushes.Orange, i, j, 1, 1);
+                }
+                for (int j = i + 1; j < n; ++j)
+                {
+                    T[i, j] = 0;
+                }
+            }
+
         }
 
         //функция вычисления координат средней точки
